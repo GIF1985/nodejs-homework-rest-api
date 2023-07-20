@@ -1,7 +1,23 @@
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import app from "./app.js";
 
-const port = process.env.PORT || 3000;
+dotenv.config();
 
-app.listen(port, () => {
-  console.log(`Server running. Use our API on port: ${port}`);
-});
+const { DB_HOST, PORT } = process.env;
+
+mongoose
+  .connect(DB_HOST, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running. Use our API on port: ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Database connection error:", error.message);
+    process.exit(1);
+  });

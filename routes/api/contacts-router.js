@@ -4,6 +4,7 @@ import {
   getContactById,
   removeContact,
   addContact,
+  updateStatusContact,
 } from "../../models/contacts.js";
 
 const router = express.Router();
@@ -61,6 +62,28 @@ router.delete("/:id", async (req, res) => {
     } else {
       res.status(404).json({ message: "Contact not found" });
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.patch("/:contactId/favorite", async (req, res) => {
+  const { contactId } = req.params;
+  const { favorite } = req.body;
+
+  if (!favorite) {
+    return res.status(400).json({ message: "missing field favorite" });
+  }
+
+  try {
+    const updatedContact = await updateStatusContact(contactId, { favorite });
+
+    if (!updatedContact) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.json(updatedContact);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
