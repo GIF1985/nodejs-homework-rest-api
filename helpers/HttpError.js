@@ -1,3 +1,4 @@
+// helpers/HttpError.js
 export default class HttpError extends Error {
   constructor(status, message = messagesList[status]) {
     super(message);
@@ -12,5 +13,3 @@ const messagesList = {
   404: "Not Found",
   409: "Conflict",
 };
-
-export { HttpError };

@@ -1,3 +1,4 @@
+// contacts-router.js
 import express from "express";
 import {
   listContacts,
@@ -5,20 +6,16 @@ import {
   addContact,
   removeContact,
 } from "../../controllers/contactsController.js";
-import { someMiddleware } from "../../middleware/someMiddleware.js";
+import { authenticateToken } from "../../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Маршрут для получения списка всех контактов
-router.get("/", listContacts);
+router.get("/", authenticateToken, listContacts);
 
-// Маршрут для получения контакта по его ID
-router.get("/:id", getContactById);
+router.get("/:id", authenticateToken, getContactById);
 
-// Маршрут для добавления нового контакта
-router.post("/", someMiddleware, addContact);
+router.post("/", authenticateToken, addContact);
 
-// Маршрут для удаления контакта по его ID
-router.delete("/:id", removeContact);
+router.delete("/:id", authenticateToken, removeContact);
 
 export default router;

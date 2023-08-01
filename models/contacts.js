@@ -1,3 +1,4 @@
+// contacts.js
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
@@ -19,6 +20,10 @@ const contactSchema = new mongoose.Schema({
   favorite: {
     type: Boolean,
     default: false,
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
