@@ -1,4 +1,4 @@
-// usersController.js
+//usersController.js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/users.js";
@@ -66,6 +66,24 @@ export async function loginUser(req, res) {
       user: {
         email: user.email,
         subscription: user.subscription,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
+export async function logoutUser(req, res) {
+  res.status(200).json({ message: "Logout successful" });
+}
+
+export async function getCurrentUser(req, res) {
+  try {
+    res.status(200).json({
+      user: {
+        email: req.user.email,
+        subscription: req.user.subscription,
       },
     });
   } catch (error) {
