@@ -1,7 +1,12 @@
-// contactsController.js
+//contactsController.js
 import { v4 as uuidv4 } from "uuid";
 import { HttpError } from "../helpers/index.js";
 import Contact from "../models/contacts.js";
+import {
+  validateContactData,
+  isValidEmail,
+  isValidPhone,
+} from "../validators/contactsValidator.js";
 
 export async function listContacts(req, res) {
   try {
@@ -30,17 +35,30 @@ export async function getContactById(req, res) {
 
 export async function addContact(req, res) {
   const { name, email, phone } = req.body;
-  if (!name || !email || !phone) {
-    res.status(400).json({ message: "Missing required fields" });
+  const errors = validateContactData({ name, email, phone });
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({ errors });
     return;
   }
+
+  if (!isValidEmail(email)) {
+    res.status(400).json({ errors: { email: "Invalid email" } });
+    return;
+  }
+
+  if (!isValidPhone(phone)) {
+    res.status(400).json({ errors: { phone: "Invalid phone number" } });
+    return;
+  }
+
   try {
     const newContact = await Contact.create({
       _id: uuidv4(),
       name,
       email,
       phone,
-      owner: req.user._id, // Assigning the owner (user) to the new contact
+      owner: req.user._id,
     });
     res.status(201).json(newContact);
   } catch (error) {
