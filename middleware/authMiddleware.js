@@ -1,4 +1,4 @@
-// authMiddleware.js
+//authMiddleware.js
 import jwt from "jsonwebtoken";
 import { HttpError } from "../helpers/index.js";
 import User from "../models/users.js";
@@ -16,7 +16,7 @@ export async function authenticateToken(req, res, next) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    req.user = user; // Adding user data to the req object for subsequent use in controllers
+    req.user = user;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Not authorized" });
