@@ -7,6 +7,7 @@ import {
   isValidEmail,
   isValidPhone,
 } from "../validators/contactsValidator.js";
+import { authenticateToken } from "../middleware/authMiddleware.js";
 
 export async function listContacts(req, res) {
   try {

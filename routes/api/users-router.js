@@ -7,6 +7,8 @@ import {
   logoutUser,
   getCurrentUser,
   updateUserAvatar,
+  resendVerificationEmail,
+  verifyUserEmail,
 } from "../../controllers/usersController.js";
 import { authenticateToken } from "../../middleware/authMiddleware.js";
 import { uploadMiddleware } from "../../middleware/uploadMiddleware.js";
@@ -24,5 +26,8 @@ router.patch(
   uploadMiddleware.single("avatar"),
   updateUserAvatar
 );
+
+router.post("/verify/resend", resendVerificationEmail);
+router.get("/verify/:verificationToken", verifyUserEmail);
 
 export default router;
